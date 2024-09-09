@@ -1,12 +1,14 @@
 from django.shortcuts import render
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework import status
 from django.db.models import Avg, Min, Max, Count
-from rest_framework.pagination import PageNumberPagination
+from rest_framework.permissions import IsAuthenticated
+
 
 from .serializer import JobSerializer
 from .models import Job
+from .pagination import JobPagination
 
 from django.shortcuts import get_object_or_404
 from .filters import JobsFilter
@@ -21,17 +23,14 @@ def getAllJobs(request):
     count = filterset.qs.count()
 
     # Pagination
-    resPerPage = 3
-    paginator = PageNumberPagination()
-    paginator.page_size = resPerPage
-
+    paginator = JobPagination()
     queryset = paginator.paginate_queryset(filterset.qs, request)
 
     serilaizer = JobSerializer(queryset, many=True)
 
     return Response({
         'count': count,
-        'resPerPage': resPerPage,
+        'resPerPage': paginator.page_size,
         'jobs': serilaizer.data
     })
 
@@ -45,7 +44,9 @@ def getJob(request, pk):
 
 
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def createNewJob(request):
+    request.data['user'] = request.user
     data = request.data
     job = Job.objects.create(**data)
     serilaizer = JobSerializer(job, many=False)
@@ -54,8 +55,12 @@ def createNewJob(request):
 
 
 @api_view(['PUT'])
+@permission_classes([IsAuthenticated])
 def updateJob(request, pk):
     job = get_object_or_404(Job, id=pk)
+
+    if job.user != request.user:
+        return Response({'message': 'You can not update this job'}, status=status.HTTP_403_FORBIDDEN)
 
     job.title = request.data['title']
     job.description = request.data['description']
@@ -77,8 +82,12 @@ def updateJob(request, pk):
 
 
 @api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
 def deleteJob(request, pk):
     job = get_object_or_404(Job, id=pk)
+
+    if job.user != request.user:
+        return Response({'message': 'You can not delete this job'}, status=status.HTTP_403_FORBIDDEN)
 
     job.delete()
 
