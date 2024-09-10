@@ -1,8 +1,32 @@
 import Link from "next/link";
+import axios from "axios";
 
 import JobItem from "./components/job/JobItem";
 
-export default function Home() {
+export interface JobType {
+  id: number;
+  title: string;
+  company: string;
+  address: string;
+  industry: string;
+  jobType: string;
+  description: string;
+  salary: number;
+  education: string;
+  experience: string;
+  email: string;
+  lastDate: string;
+  createdAt: Date;
+  point: string;
+}
+
+export default async function Home() {
+  const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/jobs/`);
+  const jobs = await res.data.jobs;
+
+  console.log(jobs);
+  
+
   return (
     <div className="container container-fluid">
       <div className="row">
@@ -20,8 +44,9 @@ export default function Home() {
               <Link href="/search">Go to Search</Link>
             </div>
           </div>
-          <JobItem />
-          <JobItem />
+          {jobs && jobs.map((job: JobType) => (
+            <JobItem key={job.id} job={job}  />
+          ))}
         </div>
       </div>
     </div>

@@ -3,7 +3,8 @@
 @tailwind utilities; */
 
 @import url("https://fonts.googleapis.com/css2?family=Parisienne&display=swap");
-@import "~bootstrap/dist/css/bootstrap.min.css";
+@import "bootstrap/dist/css/bootstrap.min.css";
+@import 'mapbox-gl/dist/mapbox-gl.css';
 
 html,
 body {
@@ -313,14 +314,17 @@ a {
 }
 
 .job-listing .job-listing-footer ul {
+  display: flex;
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
 .job-listing .job-listing-footer ul li {
-  display: inline-block;
-  margin-right: 14px;
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  margin-right: 20px;
   color: #777;
 }
 
@@ -360,6 +364,13 @@ a {
 
 .job-header span {
   color: grey;
+  display: inline-flex;
+  gap: 5px;
+  align-items: center;
+}
+
+.job-header span:nth-of-type(2) {
+  margin-left: 10px;
 }
 
 .job-contact-details h5 {

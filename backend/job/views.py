@@ -39,9 +39,13 @@ def getAllJobs(request):
 @api_view(['GET'])
 def getJob(request, pk):
     job = get_object_or_404(Job, id=pk)
+    candidates = job.candidates.all().count()
     serilaizer = JobSerializer(job, many=False)
 
-    return Response(serilaizer.data)
+    return Response({
+        'job': serilaizer.data,
+        'candidates': candidates
+    })
 
 
 @api_view(['POST'])

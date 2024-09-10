@@ -1,18 +1,31 @@
 import Link from "next/link";
 
-const JobItem = () => {
+import moment from "moment";
+
+import { FaRegClock } from "react-icons/fa";
+import { FaIndustry } from "react-icons/fa";
+import { FaBriefcase } from "react-icons/fa";
+import { FaMoneyCheckAlt } from "react-icons/fa";
+
+import { JobType } from "@/app/page";
+
+export interface JobProps {
+  job: JobType;
+  candidates?: number;
+}
+
+const JobItem: React.FC<JobProps> = ({
+  job
+}) => {
   return (
-    <Link href="/jobdetail">
+    <Link href={`/jobs/${job.id}`}>
       <div className="job-listing">
         <div className="job-listing-details">
           <div className="job-listing-description">
-            <h4 className="job-listing-company">Tech</h4>
-            <h3 className="job-listing-title">Java Developer required</h3>
+            <h4 className="job-listing-company">{job.company}</h4>
+            <h3 className="job-listing-title">{job.title}</h3>
             <p className="job-listing-text">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-              eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-              enim ad minim veniam, quis nostrud exercitation ullamco laboris
-              nisi ut aliquip ex ea commodo consequat.
+              {job.description.substring(0, 200)}...
             </p>
           </div>
 
@@ -21,18 +34,18 @@ const JobItem = () => {
 
         <div className="job-listing-footer">
           <ul>
-            <li>
-              <i aria-hidden className="fas fa-industry"></i> Business
+            <li className="job-mark">
+              <FaIndustry /> {job.industry}
             </li>
-
-            <li>
-              <i aria-hidden className="fas fa-briefcase"></i> Permanent
+            <li className="job-mark">
+              <FaBriefcase /> {job.jobType}
             </li>
-            <li>
-              <i aria-hidden className="fas fa-money-check-alt"></i>$50000
+            <li className="job-mark">
+              <FaMoneyCheckAlt /> {job.salary}
             </li>
-            <li>
-              <i aria-hidden className="far fa-clock"></i> Post 2 months ago
+            <li className="job-mark">
+              <FaRegClock />
+              {moment.utc(job.createdAt).local().startOf("seconds").fromNow()}
             </li>
           </ul>
         </div>

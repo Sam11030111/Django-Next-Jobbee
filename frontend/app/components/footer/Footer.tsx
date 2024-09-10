@@ -6,7 +6,7 @@ const Footer = () => {
         <p className="text-center mt-1">
             Jobbee - 2021-2022, All Rights Reserved
             <a
-                className="ml-4"
+                className="ms-4"
                 rel="noreferrer"
                 target="_blank"
                 href="https://storyset.com/people"
