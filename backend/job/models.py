@@ -16,7 +16,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 class JobType(models.TextChoices):
     Permanent = 'Permanent'
     Temporary = 'Temporary'
-    Intership = 'Intership'
+    Internship = 'Internship'
 
 
 class Education(models.TextChoices):
