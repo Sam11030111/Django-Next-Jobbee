@@ -43,6 +43,23 @@ a {
 
 /* Header */
 
+.btn-primary {
+  --bs-btn-color: #333;
+  --bs-btn-bg: #fff;
+  --bs-btn-border-color: #333;
+  --bs-btn-hover-color: #333;
+  --bs-btn-hover-bg: #fff;
+  --bs-btn-hover-border-color: #333;
+  --bs-btn-active-color: #333;
+  --bs-btn-active-bg: #fff;
+  --bs-btn-active-border-color: #333;
+  --bs-btn-active-shadow: 1px 1px 5px #333;
+}
+
+.btn-primary:hover {
+  box-shadow: 1px 1px 5px #333;
+}
+
 .navWrapper {
   min-width: 100%;
   background: #fff;

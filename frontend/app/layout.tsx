@@ -5,6 +5,9 @@ import Script from "next/script";
 import Head from "next/head";
 import Header from "./components/header/Header";
 import Footer from "./components/footer/Footer";
+import { AuthProvider } from "./context/AuthContext";
+import { Bounce, ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -28,12 +31,15 @@ export default function RootLayout({
         />
       </Head>
       <body>
-        <Header />
-        {children}
-        <Footer />
+        <AuthProvider>
+          <ToastContainer position="bottom-right" autoClose={3000} hideProgressBar={false} closeOnClick pauseOnHover theme="colored" transition={Bounce}/>
+          <Header />
+          {children}
+          <Footer />
+        </AuthProvider>
         <Script
-          strategy="beforeInteractive"
-          src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+            strategy="beforeInteractive"
+            src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
         />
         <Script
           strategy="beforeInteractive"
