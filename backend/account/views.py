@@ -9,6 +9,7 @@ from .validators import validate_file_extension
 
 from django.contrib.auth.models import User
 from .models import UserProfile
+from .utils import check_s3_file_exists
 
 # Create your views here.
 
@@ -46,9 +47,17 @@ def register(request):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def currentUser(request):
-    user = UserSerializer(request.user)
+    user = request.user
 
-    return Response(user.data)
+    # Check if the resume exists in S3
+    if user.userprofile.resume and not check_s3_file_exists(user.userprofile.resume.name):
+        user.userprofile.resume = None
+        user.userprofile.save(update_fields=['resume'])
+
+    # Serialize the user data
+    user_data = UserSerializer(user)
+
+    return Response(user_data.data)
 
 
 @api_view(['PUT'])

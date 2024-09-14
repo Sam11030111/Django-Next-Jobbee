@@ -49,7 +49,7 @@ const Header = () => {
                 Profile
               </Link>
 
-              <Link href="/upload/resume" className="dropdown-item">
+              <Link href="/upload" className="dropdown-item">
                 Upload Resume
               </Link>
 
