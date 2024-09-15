@@ -12,6 +12,7 @@ import { JobType } from "@/app/page";
 export interface JobProps {
   job: JobType;
   candidates?: number;
+  access_token?: string;
 }
 
 const JobItem: React.FC<JobProps> = ({

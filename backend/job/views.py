@@ -106,7 +106,7 @@ def getTopicStats(request, topic):
     jobs = Job.objects.filter(title__icontains=topic)
 
     if len(jobs) == 0:
-        return Response({'messgae': 'No stats found for {topic}'.format(topic=topic)})
+        return Response({'message': 'No stats found for {topic}'.format(topic=topic)})
 
     stats = jobs.aggregate(
         total_jobs=Count('title'),

@@ -10,10 +10,7 @@ import { UpdateProfileProps } from "./UpdateProfile";
 
 const UploadResume: React.FC<UpdateProfileProps> = ({ access_token }) => {
   const [resume, setResume] = useState<File | null>(null);
-  const { loading, user, error, uploaded, setUploaded, uploadResume } = useContext(AuthContext);  
-  
-  console.log(user);
-  
+  const { loading, user, error, uploaded, setUploaded, uploadResume } = useContext(AuthContext);    
 
   useEffect(() => {
     if (error) {

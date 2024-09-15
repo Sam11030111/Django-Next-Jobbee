@@ -6,6 +6,7 @@ import Head from "next/head";
 import Header from "./components/header/Header";
 import Footer from "./components/footer/Footer";
 import { AuthProvider } from "./context/AuthContext";
+import { JobProvider } from "./context/JobContext";
 import { Bounce, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -32,10 +33,12 @@ export default function RootLayout({
       </Head>
       <body>
         <AuthProvider>
+          <JobProvider>
           <ToastContainer position="bottom-right" autoClose={3000} hideProgressBar={false} closeOnClick pauseOnHover theme="colored" transition={Bounce}/>
           <Header />
-          {children}
+            {children}
           <Footer />
+          </JobProvider>
         </AuthProvider>
         <Script
             strategy="beforeInteractive"

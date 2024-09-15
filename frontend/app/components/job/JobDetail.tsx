@@ -1,21 +1,25 @@
 "use client";
 
 import moment from "moment";
+import { FaBuilding } from "react-icons/fa";
+import { FaMapMarkerAlt } from "react-icons/fa";
+import { FaCheck } from "react-icons/fa";
+import mapboxgl from 'mapbox-gl';
+import { useEffect, useContext } from "react";
 
 import { JobType } from "@/app/page";
 import { JobProps } from "./JobItem";
-
-import { FaBuilding } from "react-icons/fa";
-import { FaMapMarkerAlt } from "react-icons/fa";
-import mapboxgl from 'mapbox-gl';
-import { useEffect } from "react";
+import JobContext from "@/app/context/JobContext";
 
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN || "";
 
 const JobDetail: React.FC<JobProps> = ({
     job,
-    candidates
+    candidates,
+    access_token,
 }) => {    
+  const { applyToJob, error, loading, applied, checkJobApplied } = useContext(JobContext);    
+
   useEffect(() => {
     const coordinates = job.point.split("(")[1].replace(")", "").split(" ").map(coord => parseFloat(coord));    
 
@@ -30,8 +34,18 @@ const JobDetail: React.FC<JobProps> = ({
     // Add mark on map
     new mapboxgl.Marker().setLngLat([coordinates[0], coordinates[1]]).addTo(map);
 
+    checkJobApplied(job.id, access_token || "");
+
     return () => map.remove();
   }, [])
+
+  const applyToJobHandler = () => {    
+    applyToJob(job.id, access_token || "");
+  };
+
+  const d1 = moment(job.lastDate);
+  const d2 = moment(Date.now());
+  const isLastDatePassed = d1.diff(d2, "days") < 0 ? true : false;
 
   return (
     <div className="job-details-wrapper">
@@ -52,10 +66,26 @@ const JobDetail: React.FC<JobProps> = ({
 
                 <div className="mt-3">
                   <span>
-                    <button className="btn btn-primary px-4 py-2 apply-btn">
-                      Apply Now
-                    </button>
-                    <span className="ms-4 text-success">
+                    {loading ? (
+                      "Loading..."
+                    ) : applied ? (
+                      <button
+                        disabled
+                        className="btn btn-success px-4 py-2 apply-btn"
+                      >
+                        <FaCheck />{" "}
+                        {loading ? "Loading" : "Applied"}
+                      </button>
+                    ) : (
+                      <button
+                        className="btn btn-primary px-4 py-2 apply-btn"
+                        onClick={applyToJobHandler}
+                        disabled={isLastDatePassed}
+                      >
+                        {loading ? "Loading..." : "Apply Now"}
+                      </button>
+                    )}
+                    <span className="ml-4 text-success">
                       <b>{candidates}</b> candidates has applied to this job.
                     </span>
                   </span>
@@ -133,14 +163,16 @@ const JobDetail: React.FC<JobProps> = ({
               <p>{job.lastDate.substring(0, 10)}</p>
             </div>
 
-            <div className="mt-5 p-0">
-              <div className="alert alert-danger">
-                <h5>Note:</h5>
-                You can no longer apply to this job. This job is expired. Last
-                date to apply for this job was: <b>{job.lastDate.substring(0, 10)}</b>
-                <br /> Checkout others job on Jobbee.
+            {isLastDatePassed && (
+              <div className="mt-5 p-0">
+                <div className="alert alert-danger">
+                  <h5>Note:</h5>
+                  You can no longer apply to this job. This job is expired. Last
+                  date to apply for this job was: <b>{job.lastDate.substring(0, 10)}</b>
+                  <br /> Checkout others job on Jobbee.
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
       </div>
