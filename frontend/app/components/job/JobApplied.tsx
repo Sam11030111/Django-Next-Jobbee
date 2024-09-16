@@ -16,10 +16,8 @@ const JobsApplied: React.FC<JobsAppliedProps> = ({ jobs }) => {
   const [jobData, setJobData] = useState<JobsAppliedType[]>([]);
   
   useEffect(() => {
-    if (jobs.length > 0) {
-      setJobData(jobs);
-      setIsLoading(false);
-    }
+    setJobData(jobs);
+    setIsLoading(false);
   }, [jobs]);  
 
   const columns = [

@@ -9,7 +9,7 @@ import JobItem from "./components/job/JobItem";
 import Filters from "./components/filters/Filters";
 
 export interface JobType {
-  id: number;
+  id?: number;
   title: string;
   company: string;
   address: string;
@@ -20,9 +20,10 @@ export interface JobType {
   education: string;
   experience: string;
   email: string;
-  lastDate: string;
-  createdAt: Date;
-  point: string;
+  lastDate?: string;
+  createdAt?: Date;
+  point?: string;
+  positions: number;
 }
 
 export default function Home({

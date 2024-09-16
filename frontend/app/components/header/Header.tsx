@@ -29,7 +29,7 @@ const Header = () => {
           </div>
         </Link>
         <div className="btnsWrapper">
-          <Link href="/employeer/jobs/new">
+          <Link href="/employee/jobs/new">
             <button className="postAJobButton">
               <span>Post A Job</span>
             </button>
@@ -37,7 +37,7 @@ const Header = () => {
 
           {user ? (
             <DropdownButton id="dropdown-basic-button" title={`Hi, ${user.first_name}`} className="ms-4">
-              <Link href="/employeer/jobs" className="dropdown-item">
+              <Link href="/employee/jobs" className="dropdown-item">
                 My Jobs
               </Link>
 
